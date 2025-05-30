@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Onceler Secure Secret Sharing service. A very very very very very very very very simplistic service for sharing of secret values that self-destruct after a certain point and/or are viewed.
 
-Things you may want to cover:
+Use at your own risk.
 
-* Ruby version
+No guarantees.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+YMMV
