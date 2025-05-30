@@ -22,15 +22,15 @@ class Secret < ApplicationRecord
   before_validation :set_expiration, on: :create
 
   # set some important scopes
-  scope :active, -> { where(destroyed: false).where("expires_at > ?", Time.current) }
-  scope :expired, -> { where("expires_at <= ? or destroyed = ?", Time.current, true) }
+  scope :active, -> { where(revoked: false).where("expires_at > ?", Time.current) }
+  scope :expired, -> { where("expires_at <= ? or revoked = ?", Time.current, true) }
 
   def self.find_active(token)
     active.find_by(token: token)
   end
 
   def expired?
-    expires_at <= Time.current || destroyed?
+    expires_at <= Time.current || revoked?
   end
 
   def can_be_viewed?
@@ -67,8 +67,8 @@ class Secret < ApplicationRecord
     transaction do
       increment!(:view_count)
       if view_count >= max_views
-        self.update!(destroyed: true)
-        log_access("destroyed", ip_address, user_agent, "Secret destroyed after #{max_views} views")
+        self.update!(revoked: true)
+        log_access("revoked", ip_address, user_agent, "Secret revoked after #{max_views} views")
       else
         log_access("viewed", ip_address, user_agent)
       end
@@ -87,7 +87,7 @@ class Secret < ApplicationRecord
 
   # get a good url for the secret
   def public_url
-    Rails.application.routes.url_helpers.secret_url(token, host: Rails.application.routes.default_url_options[:host])
+    Rails.application.routes.url_helpers.view_secret_url(token, host: Rails.application.routes.default_url_options[:host])
   end
 
   private

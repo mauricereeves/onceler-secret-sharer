@@ -41,6 +41,15 @@
   <body>
     <div class="container">
       <h1>🔐 Secure Secret Sharing</h1>
+
+      <% if notice %>
+        <div class="alert alert-succcess"><%= notice %></div>
+      <% end %>
+
+      <% if alert %>
+        <div class="alert alert-danger"><%= alert %></div>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_30_013202) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_30_155444) do
   create_table "access_logs", force: :cascade do |t|
     t.integer "secret_id", null: false
     t.string "ip_address"
@@ -33,7 +33,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_013202) do
     t.string "created_by_ip"
     t.integer "max_views", default: 1
     t.integer "view_count", default: 0
-    t.boolean "destroyed", default: false
+    t.boolean "revoked", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["expires_at"], name: "index_secrets_on_expires_at"
