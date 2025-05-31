@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :secret do
     # our blessed attributes
     token { SecureRandom.urlsafe_base64(32) }
-    encrypted_content { nil }
-    content_iv { nil }
+    encrypted_content { "encrypted_content_here" }
+    content_iv { "iv_here" }
     expires_at { 7.days.from_now }
     created_by_ip { Faker::Internet.ip_v4_address }
     max_views { 1 }
