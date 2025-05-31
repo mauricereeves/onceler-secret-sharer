@@ -38,7 +38,11 @@ class Secret < ApplicationRecord
   end
 
   def content=(plaintext)
-    return if plaintext.blank?
+    if plaintext.blank?
+      self.encrypted_content = nil
+      self.content_iv = nil
+      return
+    end
 
     # generate a random iv for this secret
     cipher = OpenSSL::Cipher.new("aes-256-cbc")
@@ -54,13 +58,18 @@ class Secret < ApplicationRecord
   def content
     return nil if encrypted_content.blank? || content_iv.blank?
 
-    cipher = OpenSSL::Cipher.new("aes-256-cbc")
-    cipher.decrypt
-    cipher.key = encryption_key
-    cipher.iv = Base64.strict_decode64(content_iv)
-    encrypted_data = Base64.strict_decode64(encrypted_content)
-    decrypted = cipher.update(encrypted_data) + cipher.final
-    decrypted.force_encoding("UTF-8")
+    # catch the possibility of errors trying to encrypt
+    begin
+      cipher = OpenSSL::Cipher.new("aes-256-cbc")
+      cipher.decrypt
+      cipher.key = encryption_key
+      cipher.iv = Base64.strict_decode64(content_iv)
+      encrypted_data = Base64.strict_decode64(encrypted_content)
+      decrypted = cipher.update(encrypted_data) + cipher.final
+      decrypted.force_encoding("UTF-8")
+    rescue
+      nil
+    end
   end
 
   def mark_as_viewed!(ip_address = nil, user_agent = nil)
