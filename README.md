@@ -15,3 +15,7 @@ YMMV
 - Fix the failing tests. Sad. Works on my machine.
 - Better documentation throughout.
 - Update the host name hack to use environment variables for different envs
+
+## Latest Updates
+
+Added a project in GitHub to allow for better management of work.
