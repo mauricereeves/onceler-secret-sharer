@@ -11,7 +11,7 @@
 class Secret < ApplicationRecord
   has_many :access_logs, dependent: :destroy
 
-  validates :token, presence: true, uniqueness: true
+  validates :token, presence: true, uniqueness: { case_sensitive: false }
   validates :encrypted_content, presence: true
   validates :content_iv, presence: true
   validates :expires_at, presence: true
@@ -102,8 +102,7 @@ class Secret < ApplicationRecord
   private
 
   def generate_token
-    # generate a token that is 32 characters long and url safe
-    self.token = SecureRandom.urlsafe_base64(32)
+    self.token ||= SecureRandom.urlsafe_base64(32)
   end
 
   def set_expiration

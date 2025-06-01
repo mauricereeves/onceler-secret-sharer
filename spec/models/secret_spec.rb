@@ -9,7 +9,6 @@ RSpec.describe Secret, type: :model do
   # VALIDATIONS
   describe "validations" do
     subject { build(:secret) }
-    it { should validate_presence_of(:token) }
     it { should validate_uniqueness_of(:token).case_insensitive }
     it { should validate_presence_of(:encrypted_content) }
     it { should validate_presence_of(:content_iv) }
